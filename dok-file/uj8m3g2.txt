@@ -1,0 +1,34 @@
+### 运行一个 ubuntu 容器，并进入交互模式
+docker run -it --name ubuntu-16.04 hub.c.163.com/public/ubuntu:16.04 /bin/bash
+
+### 在 ubuntu 容器中执行下面命令
+apt-get update --fix-missing
+
+apt-get install -y software-properties-common
+
+add-apt-repository ppa:webupd8team/java
+
+apt-get update
+
+apt-get install -y oracle-java8-installer oracle-java8-set-default git maven curl iputils-ping
+
+rm -rf /var/lib/apt/lists/*
+
+echo -e ' #!/bin/bash \n ping 127.0.0.1' > /usr/local/bin/P
+
+chmod +x /usr/local/bin/P
+
+### 测试 P 指令
+P [ctrl + c]
+
+### 退出 ubuntu 容器
+exit
+
+### 查看 ubuntu-16.04 容器的运行状态，如果是 UP 则停止容器
+docker ps -a
+docker stop ubuntu-16.04
+
+### 提交 ubuntu 容器为 uj8m3g2 镜像 {version} 为你自己定义的版本号
+docker commit ubuntu-16.04 uj8m3g2:{version}
+
+docker rm ubuntu-16.04
