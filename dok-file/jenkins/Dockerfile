@@ -6,8 +6,11 @@ ARG group=jenkins
 ARG uid=1000
 ARG gid=1000
 
-## set user jenkins
-RUN groupadd -g $gid $group && useradd -d /jenkins -u $uid -g $gid -m -s /bin/bash $user
+## set jenkins user and start command
+RUN groupadd -g $gid $group &&\
+    useradd -d /jenkins -u $uid -g $gid -m -s /bin/bash $user &&\
+    echo -e ' #!/bin/bash \n java -jar /jenkins/jenkins.war' > /usr/local/bin/start &&\
+    chmod +x /usr/local/bin/start
 
 USER $user
 
@@ -18,4 +21,4 @@ RUN cd /jenkins && wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
 
 EXPOSE 22 8080 50000
 
-ENTRYPOINT java -jar /jenkins/jenkins.war
+ENTRYPOINT start
